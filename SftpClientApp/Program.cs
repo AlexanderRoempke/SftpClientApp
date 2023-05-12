@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SftpClientApp.Database;
@@ -16,11 +18,18 @@ namespace SftpClientApp
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddDbContext<AppDbContext>();
+
+                    var configuration = hostContext.Configuration;
+                    var connectionString = configuration.GetConnectionString("SftpConfigurationDB");
+
+                    services.AddDbContext<AppDbContext>(options =>
+                        options.UseSqlServer(connectionString)); // Replace UseSqlServer with the appropriate method for your database provider
+
                     services.AddScoped<ISftpService, SftpService>();
+                    services.AddScoped<ISftpClient, SftpClient>();
                     services.AddScoped<ILoggingService, LoggingService>();
                     services.AddScoped<IConfigurationService, ConfigurationService>();
                     services.AddScoped<ICertificateService, CertificateService>();
