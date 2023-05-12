@@ -12,7 +12,7 @@ namespace SftpClientApp.Tests.Services
         private AppDbContext GetInMemoryDbContext()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase_CertificateService")
                 .Options;
 
             var dbContext = new AppDbContext(options);

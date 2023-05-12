@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using SftpClientApp.Database.Entities;
+﻿using SftpClientApp.Database.Entities;
+using SftpClientApp.Enums;
 
 namespace SftpClientApp.Services
 {
     public interface ILoggingService
     {
-        Task Log(LogLevel logLevel, string message, SftpConfiguration sftpConfiguration = null);
+        Task Log(string message, LogLevels messageLogLevel, SftpConfiguration currentConfig);
     }
 }

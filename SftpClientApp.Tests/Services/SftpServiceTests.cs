@@ -58,13 +58,23 @@ namespace SftpClientApp.Tests.Services
             return mockConfigService.Object;
         }
 
+        private ILoggingService GetMockedLoggingService()
+        {
+            var mockConfigService = new Mock<ILoggingService>();
+
+            return mockConfigService.Object;
+        }
+
         [Fact]
         public async Task ExecuteSftpTasks_HandlesSftpTask()
         {
             // Arrange
             var mockSftpClient = GetMockedSftpClient();
             var configurationService = GetMockedConfigurationService();
-            var sftpService = new SftpService(mockSftpClient.Object, configurationService);
+            var loggingService = GetMockedLoggingService();
+
+
+            var sftpService = new SftpService(mockSftpClient.Object, configurationService, loggingService);
 
             // Act
             await sftpService.ExecuteSftpTasks();

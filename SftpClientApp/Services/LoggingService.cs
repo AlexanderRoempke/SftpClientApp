@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SftpClientApp.Database;
 using SftpClientApp.Database.Entities;
+using SftpClientApp.Enums;
 
 namespace SftpClientApp.Services
 {
@@ -14,20 +15,32 @@ namespace SftpClientApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task Log(LogLevel logLevel, string message, SftpConfiguration sftpConfiguration = null)
+        public async Task Log(string message, LogLevels messageLogLevel, SftpConfiguration currentConfig)
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            if (!shouldIWriteALog(currentConfig.LogLevel, messageLogLevel)) return;
             var logEntry = new LogEntry
             {
-                LogLevelId = logLevel.Id,
-                LogLevel = logLevel,
-                Timestamp = DateTime.UtcNow,
                 Message = message,
-                SftpConfigurationId = sftpConfiguration?.Id,
-                SftpConfiguration = sftpConfiguration
+                Timestamp = DateTime.UtcNow,
+                SftpConfigurationId = currentConfig.Id,
+                SftpConfiguration = currentConfig,
+                LogLevel = currentConfig.LogLevel
             };
 
             _dbContext.LogEntries.Add(logEntry);
             await _dbContext.SaveChangesAsync();
+        }
+
+        private bool shouldIWriteALog(LogLevel assignedLogLevel, LogLevels messageLoglevel)
+        {
+            Enum.TryParse<LogLevels>(assignedLogLevel.Name, out var level);
+
+            return level != null && level <= messageLoglevel;
         }
     }
 }

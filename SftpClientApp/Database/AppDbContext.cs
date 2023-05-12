@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SftpClientApp.Database.Entities;
+using SftpClientApp.Enums;
 
 namespace SftpClientApp.Database
 {
@@ -19,6 +20,11 @@ namespace SftpClientApp.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<LogLevel>().HasData(
+                Enum.GetValues(typeof(LogLevels))
+                    .Cast<LogLevels>()
+                    .Select(level => new LogLevel { Id = (int)level, Name = level.ToString() })
+            );
             base.OnModelCreating(modelBuilder);
         }
     }

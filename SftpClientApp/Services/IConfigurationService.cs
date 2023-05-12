@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using SftpClientApp.Database.Entities;
+﻿using SftpClientApp.Database.Entities;
 
 namespace SftpClientApp.Services
 {

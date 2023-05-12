@@ -26,9 +26,12 @@ Host.CreateDefaultBuilder(args)
                     var connectionString = configuration.GetConnectionString("SftpConfigurationDB");
 
                     services.AddDbContext<AppDbContext>(options =>
-                        options.UseSqlServer(connectionString)); // Replace UseSqlServer with the appropriate method for your database provider
+                        options.UseSqlServer(connectionString)); 
 
-                    services.AddScoped<ISftpService, SftpService>();
+                    var _workstationname = configuration.GetValue<string>("Workstationname");
+                    services.AddScoped<IConfigurationService>(provider =>
+                        new ConfigurationService(provider.GetRequiredService<AppDbContext>(), _workstationname));
+
                     services.AddScoped<ISftpClient, SftpClient>();
                     services.AddScoped<ILoggingService, LoggingService>();
                     services.AddScoped<IConfigurationService, ConfigurationService>();

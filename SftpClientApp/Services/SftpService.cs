@@ -13,17 +13,18 @@ namespace SftpClientApp.Services
     {
         private readonly ISftpClient _sftpClient;
         private readonly IConfigurationService _configurationService;
+        private readonly ILoggingService _loggingService;
 
-        public SftpService(ISftpClient sftpClient, IConfigurationService configurationService)
+        public SftpService(ISftpClient sftpClient, IConfigurationService configurationService, ILoggingService loggingService)
         {
             _sftpClient = sftpClient;
             _configurationService = configurationService;
+            _loggingService = loggingService;
         }
 
         public async Task ExecuteSftpTasks()
         {
             var configurations = await _configurationService.GetSftpConfigurations();
-
             foreach (var configuration in configurations)
             {
                 try
@@ -52,7 +53,7 @@ namespace SftpClientApp.Services
                 }
                 catch (Exception ex)
                 {
-                    // Handle exceptions, log errors, or retry if necessary
+                    await _loggingService.Log($"{ex.Message}", Enums.LogLevels.Fatal, configuration);
                 }
                 finally
                 {
@@ -60,6 +61,5 @@ namespace SftpClientApp.Services
                 }
             }
         }
-
     }
 }

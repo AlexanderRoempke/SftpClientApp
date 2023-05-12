@@ -7,6 +7,8 @@ namespace SftpClientApp.Database.Entities
     {
         [Key]
         public int Id { get; set; }
+        
+        public string Workstationname { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
         public string Username { get; set; }
@@ -15,6 +17,8 @@ namespace SftpClientApp.Database.Entities
         public Certificate Certificate { get; set; }
         public int IntervalInMinutes { get; set; }
         public bool DeleteAfterTransfer { get; set; }
+
+        public LogLevel LogLevel { get; set; }
 
         public ICollection<SftpTask> SftpTasks { get; set; }
     }
