@@ -24,7 +24,12 @@ namespace SftpClientApp.Services
         public async Task Connect(SftpConfiguration configuration)
         {
             _sftpConfiguration = configuration;
-            _sftpClient = new Renci.SshNet.SftpClient(configuration.Host, configuration.Port, configuration.Username, configuration.Password);
+
+            var methods = new AuthenticationMethod[2];
+            methods[0] = new PasswordAuthenticationMethod(configuration.Username, configuration.Password);
+            methods[1] = new PrivateKeyAuthenticationMethod(configuration.Username, new PrivateKeyFile(configuration.Certificate.CertificateData));
+            _sftpClient = new Renci.SshNet.SftpClient(new ConnectionInfo(configuration.Host, configuration.Port, configuration.Username, methods));
+
             await Task.Run(() => _sftpClient.Connect());
 
             var host = Dns.GetHostEntry(Dns.GetHostName());
