@@ -52,6 +52,7 @@ i use self contained independent deployment because, you dont want to install th
 2.  For that i am working on Active Directory and Ldap Authentication... I know your ISEC department wants you to authenticate the users atleast against the ldarp.
 3. And i want to build and installer
 4. this should also work for linux
+5. publish a docker image
 ```
 ## Credits:
 
