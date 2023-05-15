@@ -33,8 +33,8 @@ Host.CreateDefaultBuilder(args)
                         new ConfigurationService(provider.GetRequiredService<AppDbContext>(), _workstationname));
 
                     services.AddScoped<ISftpClient, SftpClient>();
+                    services.AddScoped<ISftpService, SftpService>();
                     services.AddScoped<ILoggingService, LoggingService>();
-                    services.AddScoped<IConfigurationService, ConfigurationService>();
                     services.AddScoped<ICertificateService, CertificateService>();
                     services.AddScoped<IFileFilterService, FileFilterService>();
                 });
