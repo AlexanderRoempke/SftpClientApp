@@ -18,7 +18,7 @@ so for that fun you need to deploy your database, follow these steps:
 >dotnet ef database update
 
 **Add new Migration**
->dotnet ef migrations add <Migration_NAme>
+>dotnet ef migrations add <Migration_Name>
 
 Example SQL for creating a config:
 #ToDo
